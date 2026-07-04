@@ -1,0 +1,25 @@
+[project]
+name = "enterprise-know-rag"
+version = "0.1.0"
+description = "最简 RAG 知识库系统，基于 LlamaIndex + ChromaDB + BGE + DeepSeek"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.20.0",
+    "python-multipart>=0.0.9",
+    "aiofiles>=23.0",
+    "pyyaml>=6.0",
+    "numpy>=1.22",
+    "llama-index-core>=0.12.0",
+    "llama-index-vector-stores-chroma>=0.5.0",
+    "llama-index-embeddings-huggingface>=0.5.0",
+    "llama-index-llms-openai-like>=0.3.0",
+    "chromadb>=0.6.0",
+    "sentence-transformers>=3.0",
+    "python-dotenv>=1.0",
+    "pdfplumber>=0.11",
+    "openpyxl>=3.1",
+    "python-docx>=1.1",
+    "jieba>=0.42",
+    "rank-bm25>=0.2",
+]

@@ -1,0 +1,21 @@
+框架选择 （暂定llamaIndex） ,
+数据库选择，chromaDB  -> Milvus/Qdran
+持久化，√
+embedding模型选择，√
+LLM本地化部署接口，
+混合检索，√
+近似最临近算法（ANN），√
+分块优化，√
+查询重写，√
+colbert，
+重排序，√
+加引用溯源,√
+流式输出,√
+大模型选型，参数:temprature,top-p,repetition_penalty
+提示词工程，
+评估，√
+数据来源，√
+智能体式RAG，
+上传github,
+docker,
+部署及外网访问方案，

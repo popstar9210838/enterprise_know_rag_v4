@@ -1,0 +1,17 @@
+chroma_db/
+__pycache__/
+*.pyc
+.env
+model_cache/
+.venv/
+*.egg-info/
+node_modules/
+ui/dist/
+.claude/
+.plans/
+.idea/
+.playwright-mcp/
+track/models/
+nonexistent_path/
+session.txt
+eval/results/

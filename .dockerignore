@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+ui/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Runtime data (mounted as volumes)
+chroma_db/
+data/
+model_cache/
+
+# Evaluation & tools (not needed in production)
+eval/
+track/
+.playwright-mcp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env files with secrets (passed via docker-compose env)
+.env
+ui/.env
+
+# Temporary
+*.log
+nonexistent_path/

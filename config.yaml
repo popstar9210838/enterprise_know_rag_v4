@@ -1,0 +1,71 @@
+# ── Server ──
+server:
+  host: "0.0.0.0"
+  port: 8080
+  reload: true
+  cors_origins: ["*"]
+
+# ── LLM（OpenAI 兼容接口） ──
+llm:
+  model: deepseek-chat
+  api_base: https://api.deepseek.com/v1
+  temperature: 0.3
+  max_tokens: 2048
+  context_window: 8192
+  streaming: true
+
+# ── 嵌入模型 ──
+embedding:
+  model_name: BAAI/bge-small-zh-v1.5
+  device: cpu
+  local_files_only: true
+  hf_hub_offline: true
+
+# ── 文本分割 ──
+chunking:
+  chunk_size: 512
+  chunk_overlap: 50
+
+# ── ChromaDB ──
+chromadb:
+  collection: rag_docs
+  persist_dir: ./chroma_db
+  hnsw_space: cosine
+
+# ── 路径 ──
+paths:
+  data_dir: ./data
+
+# ── 检索参数 ──
+retrieval:
+  vector_top_k: 10
+  bm25_top_k: 10
+  final_top_k: 5
+  rrf_k: 60
+  response_mode: simple_summarize
+  query_rewrite: false
+  rerank: false
+  rerank_model: "BAAI/bge-reranker-v2-m3"
+  rerank_top_n: 5
+
+# ── 文档 ──
+files:
+  supported_extensions: [".txt", ".md", ".pdf", ".docx", ".xlsx", ".xls"]
+  source_preview_len: 200
+  sample_questions: [
+    "员工离职后，他的系统权限应该什么时候收回？",
+    "我想在测试环境用真实的用户手机号做测试数据，可以吗？",
+    "请假制度是什么样的？"
+  ]
+
+# ── 质检 ──
+quality:
+  min_chinese_ratio: 0.15
+
+# ── 日志 ──
+monitoring:
+  log_level: INFO
+  log_format: text
+  log_file: ""
+  log_max_bytes: 52428800
+  log_backup_count: 30

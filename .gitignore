@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 .env
 model_cache/
+models/
+data/
 .venv/
 *.egg-info/
 node_modules/
@@ -15,3 +17,5 @@ track/models/
 nonexistent_path/
 session.txt
 eval/results/
+备忘录.txt
+CLAUDE.md

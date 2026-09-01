@@ -6,7 +6,8 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 cache_dir = "models"
 # model_name = "uer/gpt2-chinese-cluecorpussmall"
 # model_name = "BAAI/bge-small-zh-v1.5"
-model_name = "bert-base-chinese"
+model_name = "BAAI/bge-reranker-v2-m3"
+# model_name = "bert-base-chinese"
 
 
 #下载模型

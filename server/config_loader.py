@@ -48,6 +48,12 @@ class ServerConfig:
     cors_origins: list[str]
 
 
+@dataclass
+class MCPConfig:
+    enabled: bool
+    mount_path: str
+
+
 # ── RAG dataclasses ───────────────────────────────────────────────────
 
 @dataclass
@@ -64,8 +70,6 @@ class LLMConfig:
 class EmbeddingConfig:
     model_name: str
     device: str
-    local_files_only: bool
-    hf_hub_offline: bool
 
 
 @dataclass
@@ -149,8 +153,6 @@ def _load_rag_config() -> RagConfig:
         embedding=EmbeddingConfig(
             model_name=_env_or("EMBEDDING_MODEL_NAME", c["embedding"]["model_name"]),
             device=_env_or("EMBEDDING_DEVICE", c["embedding"]["device"]),
-            local_files_only=_env_or("EMBEDDING_LOCAL_FILES_ONLY", c["embedding"]["local_files_only"]),
-            hf_hub_offline=_env_or("EMBEDDING_HF_HUB_OFFLINE", c["embedding"]["hf_hub_offline"]),
         ),
         chunking=ChunkingConfig(
             chunk_size=_env_or("CHUNKING_CHUNK_SIZE", c["chunking"]["chunk_size"]),
@@ -203,6 +205,15 @@ def _load_server_config() -> ServerConfig:
     )
 
 
+def _load_mcp_config() -> MCPConfig:
+    c = _cfg.get("mcp") or {}
+    return MCPConfig(
+        enabled=_env_or("MCP_ENABLED", c.get("enabled", False)),
+        mount_path=_env_or("MCP_MOUNT_PATH", c.get("mount_path", "/mcp")),
+    )
+
+
 # 模块级单例 —— import 即加载，失败即终止
 rag_config = _load_rag_config()
 server_config = _load_server_config()
+mcp_config = _load_mcp_config()

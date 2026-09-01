@@ -35,30 +35,6 @@ from .vector_stores import (
 # LlamaIndex 全局设置
 # ═══════════════════════════════════════════════════════════════════
 
-def _resolve_model_path(model_name: str) -> str:
-    """将 HuggingFace 模型名解析为本地缓存绝对路径。
-
-    离线环境下，直接用模型名（如 "BAAI/bge-small-zh-v1.5"）会导致
-    transformers 尝试联网解析元数据；传绝对路径可以彻底跳过网络请求。
-    """
-    try:
-        cache_root = os.getenv("HF_HUB_CACHE") or os.path.join(
-            os.getenv("HF_HOME", os.path.expanduser("~/.cache/huggingface")), "hub"
-        )
-        model_dir = os.path.join(cache_root, f"models--{model_name.replace('/', '--')}")
-        snaps = os.path.join(model_dir, "snapshots")
-        if os.path.isdir(snaps):
-            for entry in sorted(os.listdir(snaps), reverse=True):
-                snap = os.path.join(snaps, entry)
-                if os.path.isdir(snap) and os.path.isfile(os.path.join(snap, "config.json")):
-                    logger.info("使用本地模型路径: %s", snap)
-                    return snap
-    except Exception:
-        pass
-    logger.debug("未找到本地模型缓存，使用原始模型名: %s", model_name)
-    return model_name
-
-
 def _setup_settings(config: RagConfig):
     """配置 LlamaIndex 全局 Settings（从 RagConfig 取值）。"""
     Settings.llm = OpenAILike(
@@ -72,9 +48,8 @@ def _setup_settings(config: RagConfig):
         streaming=config.llm.streaming,
     )
     Settings.embed_model = HuggingFaceEmbedding(
-        model_name=_resolve_model_path(config.embedding.model_name),
+        model_name=config.embedding.model_name,
         device=config.embedding.device,
-        model_kwargs={"local_files_only": config.embedding.local_files_only},
     )
     Settings.node_parser = SentenceSplitter(
         chunk_size=config.chunking.chunk_size,
@@ -231,7 +206,7 @@ def _create_hybrid_query_engine(
         from llama_index.core.postprocessor import SentenceTransformerRerank
         node_postprocessors.append(
             SentenceTransformerRerank(
-                model=_resolve_model_path(rerank_model),
+                model=rerank_model,
                 top_n=rerank_top_n,
                 trust_remote_code=True,
             )

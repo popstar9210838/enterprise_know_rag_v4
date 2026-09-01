@@ -48,7 +48,7 @@ COPY config.yaml ./
 COPY --from=frontend-builder /build/dist /app/ui/dist
 
 # Create directories for volume mounts
-RUN mkdir -p /app/chroma_db /app/data /app/model_cache
+RUN mkdir -p /app/chroma_db /app/data
 
 # Copy entrypoint
 COPY docker/entrypoint.sh /entrypoint.sh

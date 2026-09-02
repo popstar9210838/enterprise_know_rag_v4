@@ -56,4 +56,13 @@ summary {
   color: #666;
   line-height: 1.5;
 }
+@media (max-width: 767px) {
+  summary {
+    padding: 8px 0; /* 增大触控热区 */
+    font-size: 13px;
+  }
+  .source-file {
+    word-break: break-all; /* 长文件名在 320px 屏不溢出 */
+  }
+}
 </style>

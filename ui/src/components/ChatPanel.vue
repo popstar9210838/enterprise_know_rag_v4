@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, nextTick, onMounted } from "vue";
+import { ref, nextTick, onMounted, onBeforeUnmount, watch } from "vue";
 import SourceCard from "./SourceCard.vue";
 import { queryStream, getSampleQuestions } from "../api/index.js";
 
@@ -52,6 +52,10 @@ const msgContainer = ref(null);
 const inputRef = ref(null);
 const sampleQuestions = ref([]);
 
+const props = defineProps({
+  active: { type: Boolean, default: true },
+});
+
 onMounted(async () => {
   try {
     const data = await getSampleQuestions();
@@ -60,6 +64,24 @@ onMounted(async () => {
     // 获取失败静默，不影响主流程
   }
 });
+
+// 键盘弹起时把底部输入区顶上去（iOS 键盘是覆盖式，dvh 不会缩小）
+let vvCleanup = null;
+onMounted(() => {
+  if (window.visualViewport) {
+    const update = () => {
+      const kb = Math.max(0, window.innerHeight - window.visualViewport.height);
+      document.documentElement.style.setProperty("--kb", kb + "px");
+    };
+    window.visualViewport.addEventListener("resize", update);
+    window.visualViewport.addEventListener("scroll", update);
+    vvCleanup = () => {
+      window.visualViewport.removeEventListener("resize", update);
+      window.visualViewport.removeEventListener("scroll", update);
+    };
+  }
+});
+onBeforeUnmount(() => vvCleanup?.());
 
 function sendSample(q) {
   question.value = q;
@@ -120,6 +142,14 @@ function scrollBottom() {
     el.scrollTop = el.scrollHeight;
   }
 }
+
+// 从管理页切回时滚到底（display:none 期间的 scrollTop 赋值不生效）
+watch(
+  () => props.active,
+  (visible) => {
+    if (visible) nextTick(scrollBottom);
+  }
+);
 
 function clearMessages() {
   messages.value = [];
@@ -233,5 +263,31 @@ defineExpose({ clearMessages });
 .input-area button:disabled {
   background: #a0c4ff;
   cursor: not-allowed;
+}
+@media (max-width: 767px) {
+  .messages {
+    padding: 12px 16px;
+  }
+  .empty {
+    margin-top: 64px; /* 原 120px 在小屏上浪费空间 */
+  }
+  .sample-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 18px;
+  }
+  .input-area {
+    gap: 8px;
+    padding: 8px 12px;
+    padding-bottom: calc(8px + var(--kb, 0px));
+  }
+  .input-area input {
+    font-size: 16px; /* >=16px 防止 iOS 聚焦自动放大 */
+  }
+  .input-area button {
+    min-height: 44px;
+    padding: 10px 24px;
+  }
 }
 </style>

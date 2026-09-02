@@ -209,4 +209,37 @@ h2 {
 }
 .msg.info { background: #dbeafe; color: #1e40af; }
 .msg.error { background: #fee2e2; color: #991b1b; }
+@media (max-width: 767px) {
+  .manage-panel {
+    width: auto;      /* 覆盖固定 240px，拉伸到全宽 */
+    flex: 1;
+    border-right: none;
+    padding: 16px;
+    overflow-y: auto;
+  }
+  .status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .btn-refresh {
+    min-height: 44px;
+    padding: 4px 16px;
+  }
+  .upload-area {
+    gap: 8px;
+  }
+  .file-list {
+    max-height: 30vh; /* 原 100px 太小，改用视口比例 */
+  }
+  .actions {
+    gap: 10px;
+  }
+  .btn {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
 </style>

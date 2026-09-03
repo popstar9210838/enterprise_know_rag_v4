@@ -34,8 +34,7 @@ FastAPI :8080
 # 1. 配置 API Key
 echo "DEEPSEEK_API_KEY=sk-xxx" > .env
 
-# 2. 构建前端（Nginx 直接挂载 ui/dist）
-cd ui && npm install && npm run build && cd ..
+# 2. 下载嵌入模型到models文件夹（路径见 `config.yaml`，可用 `huggingface_download.py` 下载）
 
 # 3. 启动
 docker compose up -d --build
@@ -57,8 +56,6 @@ npm run dev                   # http://localhost:5173
 
 ## 使用
 
-1. 将文档放入 `data/`（支持 PDF / DOCX / Excel / Markdown / TXT）
-2. 前端上传文档，点击"同步索引"
+1. 将文档放入 `data/`或者在前端上传文档（支持 PDF / DOCX / Excel / Markdown / TXT）
+2. 前端点击"同步索引"
 3. 输入问题，获得带来源引用的回答
-
-> 嵌入模型需预先下载到 `models/`（路径见 `config.yaml`，可用 `huggingface_download.py` 下载）。本地开发需设置 `DEEPSEEK_API_KEY` 环境变量。
